@@ -1,3 +1,3 @@
-import Home from '@app/pages/Home';
+import Home from '@app/components/Home';
 
 export default Home;

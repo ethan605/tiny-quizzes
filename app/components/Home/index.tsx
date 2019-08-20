@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 
 // Components
-import Nav from '@app/components/nav';
+import Nav from '@app/components/nav_';
 
 // Locals
 import styles from './styles';
