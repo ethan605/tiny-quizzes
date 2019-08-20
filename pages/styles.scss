@@ -1,0 +1,16 @@
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+@font-face {
+  font-family: "Myriad Pro";
+  src: url("/static/assets/Myriad-Pro.ttf");
+}
+
+@font-face {
+  font-family: "Myriad Pro";
+  font-weight: bold;
+  src: url("/static/assets/Myriad-Pro-Bold.ttf");
+}
+
+body {
+  font-family: "Myriad Pro", Arial, sans-serif !important;
+}
