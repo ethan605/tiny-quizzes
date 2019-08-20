@@ -1,14 +1,7 @@
 import React, { PureComponent, ReactElement } from 'react';
 import Head from 'next/head';
 
-// Utils
-import loadFont from '@app/utils/loadFont';
-
 export default class Home extends PureComponent {
-  componentDidMount(): void {
-    loadFont('NotoSans');
-  }
-
   render(): ReactElement {
     return (
       <div className="container my-2">
