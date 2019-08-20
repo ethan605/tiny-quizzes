@@ -1,14 +1,23 @@
-import React, { SFC } from 'react';
+import React, { PureComponent, ReactElement } from 'react';
 import Head from 'next/head';
 
-const Home: SFC = () => (
-  <div className="container my-2">
-    <Head>
-      <title>Home</title>
-    </Head>
+// Utils
+import loadFont from '@app/utils/loadFont';
 
-    <h1 className="m-0 text-primary">{'Tiny Quizzes'}</h1>
-  </div>
-);
+export default class Home extends PureComponent {
+  componentDidMount(): void {
+    loadFont('NotoSans');
+  }
 
-export default Home;
+  render(): ReactElement {
+    return (
+      <div className="container my-2">
+        <Head>
+          <title>Home</title>
+        </Head>
+
+        <h1 className="m-0 text-primary">{'Tiny Quizzes'}</h1>
+      </div>
+    );
+  }
+}
