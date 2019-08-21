@@ -1,0 +1,14 @@
+type Quiz {
+  id: ID! @id
+  title: String!
+  description: String
+  createdAt: DateTime! @createdAt
+  choices: [Choice!]!
+}
+
+type Choice {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  title: String!
+  quiz: Quiz!
+}

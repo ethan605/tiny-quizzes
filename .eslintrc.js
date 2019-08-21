@@ -7,7 +7,7 @@ module.exports = {
     sourceType: 'module',
     useJSXTextNode: true,
   },
-  plugins: ['prettier', '@typescript-eslint'],
+  plugins: ['prettier', '@typescript-eslint', 'graphql'],
   env: {
     browser: true,
     es6: true,

@@ -2,7 +2,11 @@
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-export const typeDefs = /* GraphQL */ `type AggregateUser {
+export const typeDefs = /* GraphQL */ `type AggregateChoice {
+  count: Int!
+}
+
+type AggregateQuiz {
   count: Int!
 }
 
@@ -10,15 +14,220 @@ type BatchPayload {
   count: Long!
 }
 
+type Choice {
+  id: ID!
+  createdAt: DateTime!
+  title: String!
+  quiz: Quiz!
+}
+
+type ChoiceConnection {
+  pageInfo: PageInfo!
+  edges: [ChoiceEdge]!
+  aggregate: AggregateChoice!
+}
+
+input ChoiceCreateInput {
+  id: ID
+  title: String!
+  quiz: QuizCreateOneWithoutChoicesInput!
+}
+
+input ChoiceCreateManyWithoutQuizInput {
+  create: [ChoiceCreateWithoutQuizInput!]
+  connect: [ChoiceWhereUniqueInput!]
+}
+
+input ChoiceCreateWithoutQuizInput {
+  id: ID
+  title: String!
+}
+
+type ChoiceEdge {
+  node: Choice!
+  cursor: String!
+}
+
+enum ChoiceOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  title_ASC
+  title_DESC
+}
+
+type ChoicePreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  title: String!
+}
+
+input ChoiceScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  AND: [ChoiceScalarWhereInput!]
+  OR: [ChoiceScalarWhereInput!]
+  NOT: [ChoiceScalarWhereInput!]
+}
+
+type ChoiceSubscriptionPayload {
+  mutation: MutationType!
+  node: Choice
+  updatedFields: [String!]
+  previousValues: ChoicePreviousValues
+}
+
+input ChoiceSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ChoiceWhereInput
+  AND: [ChoiceSubscriptionWhereInput!]
+}
+
+input ChoiceUpdateInput {
+  title: String
+  quiz: QuizUpdateOneRequiredWithoutChoicesInput
+}
+
+input ChoiceUpdateManyDataInput {
+  title: String
+}
+
+input ChoiceUpdateManyMutationInput {
+  title: String
+}
+
+input ChoiceUpdateManyWithoutQuizInput {
+  create: [ChoiceCreateWithoutQuizInput!]
+  delete: [ChoiceWhereUniqueInput!]
+  connect: [ChoiceWhereUniqueInput!]
+  set: [ChoiceWhereUniqueInput!]
+  disconnect: [ChoiceWhereUniqueInput!]
+  update: [ChoiceUpdateWithWhereUniqueWithoutQuizInput!]
+  upsert: [ChoiceUpsertWithWhereUniqueWithoutQuizInput!]
+  deleteMany: [ChoiceScalarWhereInput!]
+  updateMany: [ChoiceUpdateManyWithWhereNestedInput!]
+}
+
+input ChoiceUpdateManyWithWhereNestedInput {
+  where: ChoiceScalarWhereInput!
+  data: ChoiceUpdateManyDataInput!
+}
+
+input ChoiceUpdateWithoutQuizDataInput {
+  title: String
+}
+
+input ChoiceUpdateWithWhereUniqueWithoutQuizInput {
+  where: ChoiceWhereUniqueInput!
+  data: ChoiceUpdateWithoutQuizDataInput!
+}
+
+input ChoiceUpsertWithWhereUniqueWithoutQuizInput {
+  where: ChoiceWhereUniqueInput!
+  update: ChoiceUpdateWithoutQuizDataInput!
+  create: ChoiceCreateWithoutQuizInput!
+}
+
+input ChoiceWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  quiz: QuizWhereInput
+  AND: [ChoiceWhereInput!]
+}
+
+input ChoiceWhereUniqueInput {
+  id: ID
+}
+
+scalar DateTime
+
 scalar Long
 
 type Mutation {
-  createUser(data: UserCreateInput!): User!
-  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
-  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  deleteUser(where: UserWhereUniqueInput!): User
-  deleteManyUsers(where: UserWhereInput): BatchPayload!
+  createChoice(data: ChoiceCreateInput!): Choice!
+  updateChoice(data: ChoiceUpdateInput!, where: ChoiceWhereUniqueInput!): Choice
+  updateManyChoices(data: ChoiceUpdateManyMutationInput!, where: ChoiceWhereInput): BatchPayload!
+  upsertChoice(where: ChoiceWhereUniqueInput!, create: ChoiceCreateInput!, update: ChoiceUpdateInput!): Choice!
+  deleteChoice(where: ChoiceWhereUniqueInput!): Choice
+  deleteManyChoices(where: ChoiceWhereInput): BatchPayload!
+  createQuiz(data: QuizCreateInput!): Quiz!
+  updateQuiz(data: QuizUpdateInput!, where: QuizWhereUniqueInput!): Quiz
+  updateManyQuizzes(data: QuizUpdateManyMutationInput!, where: QuizWhereInput): BatchPayload!
+  upsertQuiz(where: QuizWhereUniqueInput!, create: QuizCreateInput!, update: QuizUpdateInput!): Quiz!
+  deleteQuiz(where: QuizWhereUniqueInput!): Quiz
+  deleteManyQuizzes(where: QuizWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -39,74 +248,115 @@ type PageInfo {
 }
 
 type Query {
-  user(where: UserWhereUniqueInput!): User
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  choice(where: ChoiceWhereUniqueInput!): Choice
+  choices(where: ChoiceWhereInput, orderBy: ChoiceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Choice]!
+  choicesConnection(where: ChoiceWhereInput, orderBy: ChoiceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ChoiceConnection!
+  quiz(where: QuizWhereUniqueInput!): Quiz
+  quizzes(where: QuizWhereInput, orderBy: QuizOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Quiz]!
+  quizzesConnection(where: QuizWhereInput, orderBy: QuizOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): QuizConnection!
   node(id: ID!): Node
 }
 
-type Subscription {
-  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-}
-
-type User {
+type Quiz {
   id: ID!
-  name: String!
+  title: String!
+  description: String
+  createdAt: DateTime!
+  choices(where: ChoiceWhereInput, orderBy: ChoiceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Choice!]
 }
 
-type UserConnection {
+type QuizConnection {
   pageInfo: PageInfo!
-  edges: [UserEdge]!
-  aggregate: AggregateUser!
+  edges: [QuizEdge]!
+  aggregate: AggregateQuiz!
 }
 
-input UserCreateInput {
+input QuizCreateInput {
   id: ID
-  name: String!
+  title: String!
+  description: String
+  choices: ChoiceCreateManyWithoutQuizInput
 }
 
-type UserEdge {
-  node: User!
+input QuizCreateOneWithoutChoicesInput {
+  create: QuizCreateWithoutChoicesInput
+  connect: QuizWhereUniqueInput
+}
+
+input QuizCreateWithoutChoicesInput {
+  id: ID
+  title: String!
+  description: String
+}
+
+type QuizEdge {
+  node: Quiz!
   cursor: String!
 }
 
-enum UserOrderByInput {
+enum QuizOrderByInput {
   id_ASC
   id_DESC
-  name_ASC
-  name_DESC
+  title_ASC
+  title_DESC
+  description_ASC
+  description_DESC
+  createdAt_ASC
+  createdAt_DESC
 }
 
-type UserPreviousValues {
+type QuizPreviousValues {
   id: ID!
-  name: String!
+  title: String!
+  description: String
+  createdAt: DateTime!
 }
 
-type UserSubscriptionPayload {
+type QuizSubscriptionPayload {
   mutation: MutationType!
-  node: User
+  node: Quiz
   updatedFields: [String!]
-  previousValues: UserPreviousValues
+  previousValues: QuizPreviousValues
 }
 
-input UserSubscriptionWhereInput {
+input QuizSubscriptionWhereInput {
   mutation_in: [MutationType!]
   updatedFields_contains: String
   updatedFields_contains_every: [String!]
   updatedFields_contains_some: [String!]
-  node: UserWhereInput
-  AND: [UserSubscriptionWhereInput!]
+  node: QuizWhereInput
+  AND: [QuizSubscriptionWhereInput!]
 }
 
-input UserUpdateInput {
-  name: String
+input QuizUpdateInput {
+  title: String
+  description: String
+  choices: ChoiceUpdateManyWithoutQuizInput
 }
 
-input UserUpdateManyMutationInput {
-  name: String
+input QuizUpdateManyMutationInput {
+  title: String
+  description: String
 }
 
-input UserWhereInput {
+input QuizUpdateOneRequiredWithoutChoicesInput {
+  create: QuizCreateWithoutChoicesInput
+  update: QuizUpdateWithoutChoicesDataInput
+  upsert: QuizUpsertWithoutChoicesInput
+  connect: QuizWhereUniqueInput
+}
+
+input QuizUpdateWithoutChoicesDataInput {
+  title: String
+  description: String
+}
+
+input QuizUpsertWithoutChoicesInput {
+  update: QuizUpdateWithoutChoicesDataInput!
+  create: QuizCreateWithoutChoicesInput!
+}
+
+input QuizWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -121,24 +371,52 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  AND: [UserWhereInput!]
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  choices_some: ChoiceWhereInput
+  AND: [QuizWhereInput!]
 }
 
-input UserWhereUniqueInput {
+input QuizWhereUniqueInput {
   id: ID
+}
+
+type Subscription {
+  choice(where: ChoiceSubscriptionWhereInput): ChoiceSubscriptionPayload
+  quiz(where: QuizSubscriptionWhereInput): QuizSubscriptionPayload
 }
 `
