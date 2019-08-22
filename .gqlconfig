@@ -1,5 +1,0 @@
-{
-  schema: {
-    files: 'server/**/schema.graphql'
-  }
-}
