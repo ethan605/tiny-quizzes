@@ -9,6 +9,6 @@ type Quiz {
 type Choice {
   id: ID! @id
   createdAt: DateTime! @createdAt
-  title: String!
   quiz: Quiz!
+  title: String!
 }
