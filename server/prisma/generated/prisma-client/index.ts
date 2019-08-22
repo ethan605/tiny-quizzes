@@ -16,7 +16,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
-  choice: (where?: ChoiceWhereInput) => Promise<boolean>;
+  question: (where?: QuestionWhereInput) => Promise<boolean>;
   quiz: (where?: QuizWhereInput) => Promise<boolean>;
 }
 
@@ -39,25 +39,25 @@ export interface Prisma {
    * Queries
    */
 
-  choice: (where: ChoiceWhereUniqueInput) => ChoiceNullablePromise;
-  choices: (args?: {
-    where?: ChoiceWhereInput;
-    orderBy?: ChoiceOrderByInput;
+  question: (where: QuestionWhereUniqueInput) => QuestionNullablePromise;
+  questions: (args?: {
+    where?: QuestionWhereInput;
+    orderBy?: QuestionOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FragmentableArray<Choice>;
-  choicesConnection: (args?: {
-    where?: ChoiceWhereInput;
-    orderBy?: ChoiceOrderByInput;
+  }) => FragmentableArray<Question>;
+  questionsConnection: (args?: {
+    where?: QuestionWhereInput;
+    orderBy?: QuestionOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => ChoiceConnectionPromise;
+  }) => QuestionConnectionPromise;
   quiz: (where: QuizWhereUniqueInput) => QuizNullablePromise;
   quizzes: (args?: {
     where?: QuizWhereInput;
@@ -83,22 +83,22 @@ export interface Prisma {
    * Mutations
    */
 
-  createChoice: (data: ChoiceCreateInput) => ChoicePromise;
-  updateChoice: (args: {
-    data: ChoiceUpdateInput;
-    where: ChoiceWhereUniqueInput;
-  }) => ChoicePromise;
-  updateManyChoices: (args: {
-    data: ChoiceUpdateManyMutationInput;
-    where?: ChoiceWhereInput;
+  createQuestion: (data: QuestionCreateInput) => QuestionPromise;
+  updateQuestion: (args: {
+    data: QuestionUpdateInput;
+    where: QuestionWhereUniqueInput;
+  }) => QuestionPromise;
+  updateManyQuestions: (args: {
+    data: QuestionUpdateManyMutationInput;
+    where?: QuestionWhereInput;
   }) => BatchPayloadPromise;
-  upsertChoice: (args: {
-    where: ChoiceWhereUniqueInput;
-    create: ChoiceCreateInput;
-    update: ChoiceUpdateInput;
-  }) => ChoicePromise;
-  deleteChoice: (where: ChoiceWhereUniqueInput) => ChoicePromise;
-  deleteManyChoices: (where?: ChoiceWhereInput) => BatchPayloadPromise;
+  upsertQuestion: (args: {
+    where: QuestionWhereUniqueInput;
+    create: QuestionCreateInput;
+    update: QuestionUpdateInput;
+  }) => QuestionPromise;
+  deleteQuestion: (where: QuestionWhereUniqueInput) => QuestionPromise;
+  deleteManyQuestions: (where?: QuestionWhereInput) => BatchPayloadPromise;
   createQuiz: (data: QuizCreateInput) => QuizPromise;
   updateQuiz: (args: {
     data: QuizUpdateInput;
@@ -124,9 +124,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
-  choice: (
-    where?: ChoiceSubscriptionWhereInput
-  ) => ChoiceSubscriptionPayloadSubscription;
+  question: (
+    where?: QuestionSubscriptionWhereInput
+  ) => QuestionSubscriptionPayloadSubscription;
   quiz: (
     where?: QuizSubscriptionWhereInput
   ) => QuizSubscriptionPayloadSubscription;
@@ -140,11 +140,13 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type ChoiceOrderByInput =
+export type QuestionOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
+  | "description_ASC"
+  | "description_DESC"
   | "title_ASC"
   | "title_DESC";
 
@@ -153,18 +155,167 @@ export type QuizOrderByInput =
   | "id_DESC"
   | "title_ASC"
   | "title_DESC"
-  | "description_ASC"
-  | "description_DESC"
+  | "summary_ASC"
+  | "summary_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type ChoiceWhereUniqueInput = AtLeastOne<{
+export interface QuestionCreateimageUrlsInput {
+  set?: Maybe<String[] | String>;
+}
+
+export type QuestionWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface ChoiceWhereInput {
+export interface QuestionUpdateManyInput {
+  create?: Maybe<QuestionCreateInput[] | QuestionCreateInput>;
+  update?: Maybe<
+    | QuestionUpdateWithWhereUniqueNestedInput[]
+    | QuestionUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | QuestionUpsertWithWhereUniqueNestedInput[]
+    | QuestionUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<QuestionWhereUniqueInput[] | QuestionWhereUniqueInput>;
+  connect?: Maybe<QuestionWhereUniqueInput[] | QuestionWhereUniqueInput>;
+  set?: Maybe<QuestionWhereUniqueInput[] | QuestionWhereUniqueInput>;
+  disconnect?: Maybe<QuestionWhereUniqueInput[] | QuestionWhereUniqueInput>;
+  deleteMany?: Maybe<QuestionScalarWhereInput[] | QuestionScalarWhereInput>;
+  updateMany?: Maybe<
+    | QuestionUpdateManyWithWhereNestedInput[]
+    | QuestionUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface QuestionUpdateManyMutationInput {
+  description?: Maybe<String>;
+  imageUrls?: Maybe<QuestionUpdateimageUrlsInput>;
+  title?: Maybe<String>;
+}
+
+export interface QuizUpdateInput {
+  title?: Maybe<String>;
+  summary?: Maybe<String>;
+  questions?: Maybe<QuestionUpdateManyInput>;
+}
+
+export interface ChoiceScalarWhereInput {
+  content?: Maybe<String>;
+  content_not?: Maybe<String>;
+  content_in?: Maybe<String[] | String>;
+  content_not_in?: Maybe<String[] | String>;
+  content_lt?: Maybe<String>;
+  content_lte?: Maybe<String>;
+  content_gt?: Maybe<String>;
+  content_gte?: Maybe<String>;
+  content_contains?: Maybe<String>;
+  content_not_contains?: Maybe<String>;
+  content_starts_with?: Maybe<String>;
+  content_not_starts_with?: Maybe<String>;
+  content_ends_with?: Maybe<String>;
+  content_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  imageUrl?: Maybe<String>;
+  imageUrl_not?: Maybe<String>;
+  imageUrl_in?: Maybe<String[] | String>;
+  imageUrl_not_in?: Maybe<String[] | String>;
+  imageUrl_lt?: Maybe<String>;
+  imageUrl_lte?: Maybe<String>;
+  imageUrl_gt?: Maybe<String>;
+  imageUrl_gte?: Maybe<String>;
+  imageUrl_contains?: Maybe<String>;
+  imageUrl_not_contains?: Maybe<String>;
+  imageUrl_starts_with?: Maybe<String>;
+  imageUrl_not_starts_with?: Maybe<String>;
+  imageUrl_ends_with?: Maybe<String>;
+  imageUrl_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ChoiceScalarWhereInput[] | ChoiceScalarWhereInput>;
+  OR?: Maybe<ChoiceScalarWhereInput[] | ChoiceScalarWhereInput>;
+  NOT?: Maybe<ChoiceScalarWhereInput[] | ChoiceScalarWhereInput>;
+}
+
+export interface QuestionCreateManyInput {
+  create?: Maybe<QuestionCreateInput[] | QuestionCreateInput>;
+  connect?: Maybe<QuestionWhereUniqueInput[] | QuestionWhereUniqueInput>;
+}
+
+export interface ChoiceRestrictedWhereInput {
+  content?: Maybe<String>;
+  content_not?: Maybe<String>;
+  content_in?: Maybe<String[] | String>;
+  content_not_in?: Maybe<String[] | String>;
+  content_lt?: Maybe<String>;
+  content_lte?: Maybe<String>;
+  content_gt?: Maybe<String>;
+  content_gte?: Maybe<String>;
+  content_contains?: Maybe<String>;
+  content_not_contains?: Maybe<String>;
+  content_starts_with?: Maybe<String>;
+  content_not_starts_with?: Maybe<String>;
+  content_ends_with?: Maybe<String>;
+  content_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  imageUrl?: Maybe<String>;
+  imageUrl_not?: Maybe<String>;
+  imageUrl_in?: Maybe<String[] | String>;
+  imageUrl_not_in?: Maybe<String[] | String>;
+  imageUrl_lt?: Maybe<String>;
+  imageUrl_lte?: Maybe<String>;
+  imageUrl_gt?: Maybe<String>;
+  imageUrl_gte?: Maybe<String>;
+  imageUrl_contains?: Maybe<String>;
+  imageUrl_not_contains?: Maybe<String>;
+  imageUrl_starts_with?: Maybe<String>;
+  imageUrl_not_starts_with?: Maybe<String>;
+  imageUrl_ends_with?: Maybe<String>;
+  imageUrl_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ChoiceRestrictedWhereInput[] | ChoiceRestrictedWhereInput>;
+}
+
+export interface QuestionSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<QuestionWhereInput>;
+  AND?: Maybe<
+    QuestionSubscriptionWhereInput[] | QuestionSubscriptionWhereInput
+  >;
+}
+
+export interface QuestionUpdateManyDataInput {
+  description?: Maybe<String>;
+  imageUrls?: Maybe<QuestionUpdateimageUrlsInput>;
+  title?: Maybe<String>;
+}
+
+export interface QuestionCreateInput {
+  id?: Maybe<ID_Input>;
+  choices?: Maybe<ChoiceCreateManyInput>;
+  description?: Maybe<String>;
+  imageUrls?: Maybe<QuestionCreateimageUrlsInput>;
+  title: String;
+}
+
+export interface QuestionScalarWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -187,6 +338,20 @@ export interface ChoiceWhereInput {
   createdAt_lte?: Maybe<DateTimeInput>;
   createdAt_gt?: Maybe<DateTimeInput>;
   createdAt_gte?: Maybe<DateTimeInput>;
+  description?: Maybe<String>;
+  description_not?: Maybe<String>;
+  description_in?: Maybe<String[] | String>;
+  description_not_in?: Maybe<String[] | String>;
+  description_lt?: Maybe<String>;
+  description_lte?: Maybe<String>;
+  description_gt?: Maybe<String>;
+  description_gte?: Maybe<String>;
+  description_contains?: Maybe<String>;
+  description_not_contains?: Maybe<String>;
+  description_starts_with?: Maybe<String>;
+  description_not_starts_with?: Maybe<String>;
+  description_ends_with?: Maybe<String>;
+  description_not_ends_with?: Maybe<String>;
   title?: Maybe<String>;
   title_not?: Maybe<String>;
   title_in?: Maybe<String[] | String>;
@@ -201,8 +366,22 @@ export interface ChoiceWhereInput {
   title_not_starts_with?: Maybe<String>;
   title_ends_with?: Maybe<String>;
   title_not_ends_with?: Maybe<String>;
-  quiz?: Maybe<QuizWhereInput>;
-  AND?: Maybe<ChoiceWhereInput[] | ChoiceWhereInput>;
+  AND?: Maybe<QuestionScalarWhereInput[] | QuestionScalarWhereInput>;
+  OR?: Maybe<QuestionScalarWhereInput[] | QuestionScalarWhereInput>;
+  NOT?: Maybe<QuestionScalarWhereInput[] | QuestionScalarWhereInput>;
+}
+
+export interface ChoiceCreateManyInput {
+  create?: Maybe<ChoiceCreateInput[] | ChoiceCreateInput>;
+}
+
+export type QuizWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface ChoiceCreateInput {
+  content: String;
+  imageUrl?: Maybe<String>;
 }
 
 export interface QuizWhereInput {
@@ -234,20 +413,20 @@ export interface QuizWhereInput {
   title_not_starts_with?: Maybe<String>;
   title_ends_with?: Maybe<String>;
   title_not_ends_with?: Maybe<String>;
-  description?: Maybe<String>;
-  description_not?: Maybe<String>;
-  description_in?: Maybe<String[] | String>;
-  description_not_in?: Maybe<String[] | String>;
-  description_lt?: Maybe<String>;
-  description_lte?: Maybe<String>;
-  description_gt?: Maybe<String>;
-  description_gte?: Maybe<String>;
-  description_contains?: Maybe<String>;
-  description_not_contains?: Maybe<String>;
-  description_starts_with?: Maybe<String>;
-  description_not_starts_with?: Maybe<String>;
-  description_ends_with?: Maybe<String>;
-  description_not_ends_with?: Maybe<String>;
+  summary?: Maybe<String>;
+  summary_not?: Maybe<String>;
+  summary_in?: Maybe<String[] | String>;
+  summary_not_in?: Maybe<String[] | String>;
+  summary_lt?: Maybe<String>;
+  summary_lte?: Maybe<String>;
+  summary_gt?: Maybe<String>;
+  summary_gte?: Maybe<String>;
+  summary_contains?: Maybe<String>;
+  summary_not_contains?: Maybe<String>;
+  summary_starts_with?: Maybe<String>;
+  summary_not_starts_with?: Maybe<String>;
+  summary_ends_with?: Maybe<String>;
+  summary_not_ends_with?: Maybe<String>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -256,94 +435,71 @@ export interface QuizWhereInput {
   createdAt_lte?: Maybe<DateTimeInput>;
   createdAt_gt?: Maybe<DateTimeInput>;
   createdAt_gte?: Maybe<DateTimeInput>;
-  choices_some?: Maybe<ChoiceWhereInput>;
+  questions_some?: Maybe<QuestionWhereInput>;
   AND?: Maybe<QuizWhereInput[] | QuizWhereInput>;
-}
-
-export type QuizWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface ChoiceCreateInput {
-  id?: Maybe<ID_Input>;
-  title: String;
-  quiz: QuizCreateOneWithoutChoicesInput;
-}
-
-export interface QuizCreateOneWithoutChoicesInput {
-  create?: Maybe<QuizCreateWithoutChoicesInput>;
-  connect?: Maybe<QuizWhereUniqueInput>;
-}
-
-export interface QuizCreateWithoutChoicesInput {
-  id?: Maybe<ID_Input>;
-  title: String;
-  description?: Maybe<String>;
-}
-
-export interface ChoiceUpdateInput {
-  title?: Maybe<String>;
-  quiz?: Maybe<QuizUpdateOneRequiredWithoutChoicesInput>;
-}
-
-export interface QuizUpdateOneRequiredWithoutChoicesInput {
-  create?: Maybe<QuizCreateWithoutChoicesInput>;
-  update?: Maybe<QuizUpdateWithoutChoicesDataInput>;
-  upsert?: Maybe<QuizUpsertWithoutChoicesInput>;
-  connect?: Maybe<QuizWhereUniqueInput>;
-}
-
-export interface QuizUpdateWithoutChoicesDataInput {
-  title?: Maybe<String>;
-  description?: Maybe<String>;
-}
-
-export interface QuizUpsertWithoutChoicesInput {
-  update: QuizUpdateWithoutChoicesDataInput;
-  create: QuizCreateWithoutChoicesInput;
-}
-
-export interface ChoiceUpdateManyMutationInput {
-  title?: Maybe<String>;
 }
 
 export interface QuizCreateInput {
   id?: Maybe<ID_Input>;
   title: String;
+  summary?: Maybe<String>;
+  questions?: Maybe<QuestionCreateManyInput>;
+}
+
+export interface ChoiceWhereInput {
+  content?: Maybe<String>;
+  content_not?: Maybe<String>;
+  content_in?: Maybe<String[] | String>;
+  content_not_in?: Maybe<String[] | String>;
+  content_lt?: Maybe<String>;
+  content_lte?: Maybe<String>;
+  content_gt?: Maybe<String>;
+  content_gte?: Maybe<String>;
+  content_contains?: Maybe<String>;
+  content_not_contains?: Maybe<String>;
+  content_starts_with?: Maybe<String>;
+  content_not_starts_with?: Maybe<String>;
+  content_ends_with?: Maybe<String>;
+  content_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  imageUrl?: Maybe<String>;
+  imageUrl_not?: Maybe<String>;
+  imageUrl_in?: Maybe<String[] | String>;
+  imageUrl_not_in?: Maybe<String[] | String>;
+  imageUrl_lt?: Maybe<String>;
+  imageUrl_lte?: Maybe<String>;
+  imageUrl_gt?: Maybe<String>;
+  imageUrl_gte?: Maybe<String>;
+  imageUrl_contains?: Maybe<String>;
+  imageUrl_not_contains?: Maybe<String>;
+  imageUrl_starts_with?: Maybe<String>;
+  imageUrl_not_starts_with?: Maybe<String>;
+  imageUrl_ends_with?: Maybe<String>;
+  imageUrl_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ChoiceWhereInput[] | ChoiceWhereInput>;
+}
+
+export interface QuestionUpdateInput {
+  choices?: Maybe<ChoiceUpdateManyInput>;
   description?: Maybe<String>;
-  choices?: Maybe<ChoiceCreateManyWithoutQuizInput>;
-}
-
-export interface ChoiceCreateManyWithoutQuizInput {
-  create?: Maybe<ChoiceCreateWithoutQuizInput[] | ChoiceCreateWithoutQuizInput>;
-  connect?: Maybe<ChoiceWhereUniqueInput[] | ChoiceWhereUniqueInput>;
-}
-
-export interface ChoiceCreateWithoutQuizInput {
-  id?: Maybe<ID_Input>;
-  title: String;
-}
-
-export interface QuizUpdateInput {
+  imageUrls?: Maybe<QuestionUpdateimageUrlsInput>;
   title?: Maybe<String>;
-  description?: Maybe<String>;
-  choices?: Maybe<ChoiceUpdateManyWithoutQuizInput>;
 }
 
-export interface ChoiceUpdateManyWithoutQuizInput {
-  create?: Maybe<ChoiceCreateWithoutQuizInput[] | ChoiceCreateWithoutQuizInput>;
-  delete?: Maybe<ChoiceWhereUniqueInput[] | ChoiceWhereUniqueInput>;
-  connect?: Maybe<ChoiceWhereUniqueInput[] | ChoiceWhereUniqueInput>;
-  set?: Maybe<ChoiceWhereUniqueInput[] | ChoiceWhereUniqueInput>;
-  disconnect?: Maybe<ChoiceWhereUniqueInput[] | ChoiceWhereUniqueInput>;
-  update?: Maybe<
-    | ChoiceUpdateWithWhereUniqueWithoutQuizInput[]
-    | ChoiceUpdateWithWhereUniqueWithoutQuizInput
-  >;
-  upsert?: Maybe<
-    | ChoiceUpsertWithWhereUniqueWithoutQuizInput[]
-    | ChoiceUpsertWithWhereUniqueWithoutQuizInput
-  >;
+export interface QuizUpdateManyMutationInput {
+  title?: Maybe<String>;
+  summary?: Maybe<String>;
+}
+
+export interface ChoiceUpdateManyInput {
+  create?: Maybe<ChoiceCreateInput[] | ChoiceCreateInput>;
   deleteMany?: Maybe<ChoiceScalarWhereInput[] | ChoiceScalarWhereInput>;
   updateMany?: Maybe<
     | ChoiceUpdateManyWithWhereNestedInput[]
@@ -351,22 +507,27 @@ export interface ChoiceUpdateManyWithoutQuizInput {
   >;
 }
 
-export interface ChoiceUpdateWithWhereUniqueWithoutQuizInput {
-  where: ChoiceWhereUniqueInput;
-  data: ChoiceUpdateWithoutQuizDataInput;
+export interface QuestionUpsertWithWhereUniqueNestedInput {
+  where: QuestionWhereUniqueInput;
+  update: QuestionUpdateDataInput;
+  create: QuestionCreateInput;
 }
 
-export interface ChoiceUpdateWithoutQuizDataInput {
-  title?: Maybe<String>;
+export interface QuestionUpdateimageUrlsInput {
+  set?: Maybe<String[] | String>;
 }
 
-export interface ChoiceUpsertWithWhereUniqueWithoutQuizInput {
-  where: ChoiceWhereUniqueInput;
-  update: ChoiceUpdateWithoutQuizDataInput;
-  create: ChoiceCreateWithoutQuizInput;
+export interface ChoiceUpdateManyDataInput {
+  content?: Maybe<String>;
+  imageUrl?: Maybe<String>;
 }
 
-export interface ChoiceScalarWhereInput {
+export interface ChoiceUpdateManyWithWhereNestedInput {
+  where: ChoiceScalarWhereInput;
+  data: ChoiceUpdateManyDataInput;
+}
+
+export interface QuestionWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -381,6 +542,9 @@ export interface ChoiceScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  choices_some?: Maybe<ChoiceWhereInput>;
+  choices_every?: Maybe<ChoiceRestrictedWhereInput>;
+  choices_none?: Maybe<ChoiceRestrictedWhereInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -389,6 +553,20 @@ export interface ChoiceScalarWhereInput {
   createdAt_lte?: Maybe<DateTimeInput>;
   createdAt_gt?: Maybe<DateTimeInput>;
   createdAt_gte?: Maybe<DateTimeInput>;
+  description?: Maybe<String>;
+  description_not?: Maybe<String>;
+  description_in?: Maybe<String[] | String>;
+  description_not_in?: Maybe<String[] | String>;
+  description_lt?: Maybe<String>;
+  description_lte?: Maybe<String>;
+  description_gt?: Maybe<String>;
+  description_gte?: Maybe<String>;
+  description_contains?: Maybe<String>;
+  description_not_contains?: Maybe<String>;
+  description_starts_with?: Maybe<String>;
+  description_not_starts_with?: Maybe<String>;
+  description_ends_with?: Maybe<String>;
+  description_not_ends_with?: Maybe<String>;
   title?: Maybe<String>;
   title_not?: Maybe<String>;
   title_in?: Maybe<String[] | String>;
@@ -403,32 +581,19 @@ export interface ChoiceScalarWhereInput {
   title_not_starts_with?: Maybe<String>;
   title_ends_with?: Maybe<String>;
   title_not_ends_with?: Maybe<String>;
-  AND?: Maybe<ChoiceScalarWhereInput[] | ChoiceScalarWhereInput>;
-  OR?: Maybe<ChoiceScalarWhereInput[] | ChoiceScalarWhereInput>;
-  NOT?: Maybe<ChoiceScalarWhereInput[] | ChoiceScalarWhereInput>;
+  AND?: Maybe<QuestionWhereInput[] | QuestionWhereInput>;
 }
 
-export interface ChoiceUpdateManyWithWhereNestedInput {
-  where: ChoiceScalarWhereInput;
-  data: ChoiceUpdateManyDataInput;
-}
-
-export interface ChoiceUpdateManyDataInput {
-  title?: Maybe<String>;
-}
-
-export interface QuizUpdateManyMutationInput {
-  title?: Maybe<String>;
+export interface QuestionUpdateDataInput {
+  choices?: Maybe<ChoiceUpdateManyInput>;
   description?: Maybe<String>;
+  imageUrls?: Maybe<QuestionUpdateimageUrlsInput>;
+  title?: Maybe<String>;
 }
 
-export interface ChoiceSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ChoiceWhereInput>;
-  AND?: Maybe<ChoiceSubscriptionWhereInput[] | ChoiceSubscriptionWhereInput>;
+export interface QuestionUpdateManyWithWhereNestedInput {
+  where: QuestionScalarWhereInput;
+  data: QuestionUpdateManyDataInput;
 }
 
 export interface QuizSubscriptionWhereInput {
@@ -440,119 +605,191 @@ export interface QuizSubscriptionWhereInput {
   AND?: Maybe<QuizSubscriptionWhereInput[] | QuizSubscriptionWhereInput>;
 }
 
+export interface QuestionUpdateWithWhereUniqueNestedInput {
+  where: QuestionWhereUniqueInput;
+  data: QuestionUpdateDataInput;
+}
+
 export interface NodeNode {
   id: ID_Output;
 }
 
-export interface Choice {
+export interface QuizPreviousValues {
   id: ID_Output;
-  createdAt: DateTimeOutput;
   title: String;
+  summary?: String;
+  createdAt: DateTimeOutput;
 }
 
-export interface ChoicePromise extends Promise<Choice>, Fragmentable {
+export interface QuizPreviousValuesPromise
+  extends Promise<QuizPreviousValues>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
   title: () => Promise<String>;
-  quiz: <T = QuizPromise>() => T;
+  summary: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
 }
 
-export interface ChoiceSubscription
-  extends Promise<AsyncIterator<Choice>>,
+export interface QuizPreviousValuesSubscription
+  extends Promise<AsyncIterator<QuizPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   title: () => Promise<AsyncIterator<String>>;
-  quiz: <T = QuizSubscription>() => T;
+  summary: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
-export interface ChoiceNullablePromise
-  extends Promise<Choice | null>,
+export interface AggregateQuestion {
+  count: Int;
+}
+
+export interface AggregateQuestionPromise
+  extends Promise<AggregateQuestion>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  title: () => Promise<String>;
-  quiz: <T = QuizPromise>() => T;
+  count: () => Promise<Int>;
 }
 
-export interface Quiz {
+export interface AggregateQuestionSubscription
+  extends Promise<AsyncIterator<AggregateQuestion>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface Question {
   id: ID_Output;
-  title: String;
+  choices?: <T = FragmentableArray<Choice>>() => T;
+  createdAt: DateTimeOutput;
   description?: String;
-  createdAt: DateTimeOutput;
+  imageUrls: String[];
+  title: String;
 }
 
-export interface QuizPromise extends Promise<Quiz>, Fragmentable {
+export interface QuestionPromise extends Promise<Question>, Fragmentable {
   id: () => Promise<ID_Output>;
-  title: () => Promise<String>;
-  description: () => Promise<String>;
+  choices: <T = FragmentableArray<Choice>>() => T;
   createdAt: () => Promise<DateTimeOutput>;
-  choices: <T = FragmentableArray<Choice>>(args?: {
-    where?: ChoiceWhereInput;
-    orderBy?: ChoiceOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  description: () => Promise<String>;
+  imageUrls: () => Promise<String[]>;
+  title: () => Promise<String>;
 }
 
-export interface QuizSubscription
-  extends Promise<AsyncIterator<Quiz>>,
+export interface QuestionSubscription
+  extends Promise<AsyncIterator<Question>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  title: () => Promise<AsyncIterator<String>>;
-  description: () => Promise<AsyncIterator<String>>;
+  choices: <T = Promise<AsyncIterator<ChoiceSubscription>>>() => T;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  choices: <T = Promise<AsyncIterator<ChoiceSubscription>>>(args?: {
-    where?: ChoiceWhereInput;
-    orderBy?: ChoiceOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  description: () => Promise<AsyncIterator<String>>;
+  imageUrls: () => Promise<AsyncIterator<String[]>>;
+  title: () => Promise<AsyncIterator<String>>;
 }
 
-export interface QuizNullablePromise
-  extends Promise<Quiz | null>,
+export interface QuestionNullablePromise
+  extends Promise<Question | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  title: () => Promise<String>;
-  description: () => Promise<String>;
+  choices: <T = FragmentableArray<Choice>>() => T;
   createdAt: () => Promise<DateTimeOutput>;
-  choices: <T = FragmentableArray<Choice>>(args?: {
-    where?: ChoiceWhereInput;
-    orderBy?: ChoiceOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  description: () => Promise<String>;
+  imageUrls: () => Promise<String[]>;
+  title: () => Promise<String>;
 }
 
-export interface ChoiceConnection {
+export interface QuestionEdge {
+  node: Question;
+  cursor: String;
+}
+
+export interface QuestionEdgePromise
+  extends Promise<QuestionEdge>,
+    Fragmentable {
+  node: <T = QuestionPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface QuestionEdgeSubscription
+  extends Promise<AsyncIterator<QuestionEdge>>,
+    Fragmentable {
+  node: <T = QuestionSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface AggregateQuiz {
+  count: Int;
+}
+
+export interface AggregateQuizPromise
+  extends Promise<AggregateQuiz>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateQuizSubscription
+  extends Promise<AsyncIterator<AggregateQuiz>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface QuestionSubscriptionPayload {
+  mutation: MutationType;
+  node: Question;
+  updatedFields: String[];
+  previousValues: QuestionPreviousValues;
+}
+
+export interface QuestionSubscriptionPayloadPromise
+  extends Promise<QuestionSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = QuestionPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = QuestionPreviousValuesPromise>() => T;
+}
+
+export interface QuestionSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<QuestionSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = QuestionSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = QuestionPreviousValuesSubscription>() => T;
+}
+
+export interface QuestionConnection {
   pageInfo: PageInfo;
-  edges: ChoiceEdge[];
+  edges: QuestionEdge[];
 }
 
-export interface ChoiceConnectionPromise
-  extends Promise<ChoiceConnection>,
+export interface QuestionConnectionPromise
+  extends Promise<QuestionConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ChoiceEdge>>() => T;
-  aggregate: <T = AggregateChoicePromise>() => T;
+  edges: <T = FragmentableArray<QuestionEdge>>() => T;
+  aggregate: <T = AggregateQuestionPromise>() => T;
 }
 
-export interface ChoiceConnectionSubscription
-  extends Promise<AsyncIterator<ChoiceConnection>>,
+export interface QuestionConnectionSubscription
+  extends Promise<AsyncIterator<QuestionConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ChoiceEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateChoiceSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<QuestionEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateQuestionSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -578,58 +815,32 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface ChoiceEdge {
-  node: Choice;
-  cursor: String;
+export interface QuestionPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  description?: String;
+  imageUrls: String[];
+  title: String;
 }
 
-export interface ChoiceEdgePromise extends Promise<ChoiceEdge>, Fragmentable {
-  node: <T = ChoicePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface ChoiceEdgeSubscription
-  extends Promise<AsyncIterator<ChoiceEdge>>,
+export interface QuestionPreviousValuesPromise
+  extends Promise<QuestionPreviousValues>,
     Fragmentable {
-  node: <T = ChoiceSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  description: () => Promise<String>;
+  imageUrls: () => Promise<String[]>;
+  title: () => Promise<String>;
 }
 
-export interface AggregateChoice {
-  count: Int;
-}
-
-export interface AggregateChoicePromise
-  extends Promise<AggregateChoice>,
+export interface QuestionPreviousValuesSubscription
+  extends Promise<AsyncIterator<QuestionPreviousValues>>,
     Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateChoiceSubscription
-  extends Promise<AsyncIterator<AggregateChoice>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface QuizConnection {
-  pageInfo: PageInfo;
-  edges: QuizEdge[];
-}
-
-export interface QuizConnectionPromise
-  extends Promise<QuizConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<QuizEdge>>() => T;
-  aggregate: <T = AggregateQuizPromise>() => T;
-}
-
-export interface QuizConnectionSubscription
-  extends Promise<AsyncIterator<QuizConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<QuizEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateQuizSubscription>() => T;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  description: () => Promise<AsyncIterator<String>>;
+  imageUrls: () => Promise<AsyncIterator<String[]>>;
+  title: () => Promise<AsyncIterator<String>>;
 }
 
 export interface QuizEdge {
@@ -647,85 +858,6 @@ export interface QuizEdgeSubscription
     Fragmentable {
   node: <T = QuizSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateQuiz {
-  count: Int;
-}
-
-export interface AggregateQuizPromise
-  extends Promise<AggregateQuiz>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateQuizSubscription
-  extends Promise<AsyncIterator<AggregateQuiz>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface BatchPayload {
-  count: Long;
-}
-
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface ChoiceSubscriptionPayload {
-  mutation: MutationType;
-  node: Choice;
-  updatedFields: String[];
-  previousValues: ChoicePreviousValues;
-}
-
-export interface ChoiceSubscriptionPayloadPromise
-  extends Promise<ChoiceSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = ChoicePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = ChoicePreviousValuesPromise>() => T;
-}
-
-export interface ChoiceSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ChoiceSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ChoiceSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ChoicePreviousValuesSubscription>() => T;
-}
-
-export interface ChoicePreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  title: String;
-}
-
-export interface ChoicePreviousValuesPromise
-  extends Promise<ChoicePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  title: () => Promise<String>;
-}
-
-export interface ChoicePreviousValuesSubscription
-  extends Promise<AsyncIterator<ChoicePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  title: () => Promise<AsyncIterator<String>>;
 }
 
 export interface QuizSubscriptionPayload {
@@ -753,36 +885,118 @@ export interface QuizSubscriptionPayloadSubscription
   previousValues: <T = QuizPreviousValuesSubscription>() => T;
 }
 
-export interface QuizPreviousValues {
+export interface Quiz {
   id: ID_Output;
   title: String;
-  description?: String;
+  summary?: String;
   createdAt: DateTimeOutput;
 }
 
-export interface QuizPreviousValuesPromise
-  extends Promise<QuizPreviousValues>,
-    Fragmentable {
+export interface QuizPromise extends Promise<Quiz>, Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
-  description: () => Promise<String>;
+  summary: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
+  questions: <T = FragmentableArray<Question>>(args?: {
+    where?: QuestionWhereInput;
+    orderBy?: QuestionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface QuizPreviousValuesSubscription
-  extends Promise<AsyncIterator<QuizPreviousValues>>,
+export interface QuizSubscription
+  extends Promise<AsyncIterator<Quiz>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
-  description: () => Promise<AsyncIterator<String>>;
+  summary: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  questions: <T = Promise<AsyncIterator<QuestionSubscription>>>(args?: {
+    where?: QuestionWhereInput;
+    orderBy?: QuestionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface QuizNullablePromise
+  extends Promise<Quiz | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  summary: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  questions: <T = FragmentableArray<Question>>(args?: {
+    where?: QuestionWhereInput;
+    orderBy?: QuestionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface Choice {
+  content: String;
+  createdAt: DateTimeOutput;
+  imageUrl?: String;
+}
+
+export interface ChoicePromise extends Promise<Choice>, Fragmentable {
+  content: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  imageUrl: () => Promise<String>;
+}
+
+export interface ChoiceSubscription
+  extends Promise<AsyncIterator<Choice>>,
+    Fragmentable {
+  content: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  imageUrl: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ChoiceNullablePromise
+  extends Promise<Choice | null>,
+    Fragmentable {
+  content: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  imageUrl: () => Promise<String>;
+}
+
+export interface QuizConnection {
+  pageInfo: PageInfo;
+  edges: QuizEdge[];
+}
+
+export interface QuizConnectionPromise
+  extends Promise<QuizConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<QuizEdge>>() => T;
+  aggregate: <T = AggregateQuizPromise>() => T;
+}
+
+export interface QuizConnectionSubscription
+  extends Promise<AsyncIterator<QuizConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<QuizEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateQuizSubscription>() => T;
 }
 
 /*
-The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
+The `Boolean` scalar type represents `true` or `false`.
 */
-export type ID_Input = string | number;
-export type ID_Output = string;
+export type Boolean = boolean;
 
 /*
 DateTime scalar input type, allowing Date
@@ -795,21 +1009,22 @@ DateTime scalar output type, which is always a string
 export type DateTimeOutput = string;
 
 /*
+The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
+*/
+export type ID_Input = string | number;
+export type ID_Output = string;
+
+/*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
 export type String = string;
+
+export type Long = string;
 
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
 */
 export type Int = number;
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
-
-export type Long = string;
 
 /**
  * Model Metadata
@@ -821,8 +1036,12 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "Choice",
+    name: "Question",
     embedded: false
+  },
+  {
+    name: "Choice",
+    embedded: true
   }
 ];
 

@@ -1,14 +1,22 @@
 type Quiz {
   id: ID! @id
   title: String!
-  description: String
+  summary: String
   createdAt: DateTime! @createdAt
-  choices: [Choice!]! @relation(link: INLINE)
+  questions: [Question!]! @relation(link: INLINE)
 }
 
-type Choice {
+type Question {
   id: ID! @id
+  choices: [Choice!]!
   createdAt: DateTime! @createdAt
-  quiz: Quiz!
+  description: String
+  imageUrls: [String]
   title: String!
+}
+
+type Choice @embedded {
+  content: String!
+  createdAt: DateTime! @createdAt
+  imageUrl: String
 }
