@@ -1,0 +1,17 @@
+{
+  schema: {
+    files: 'server/prisma/generated/prisma-client/schema.graphql'
+  },
+  query: {
+    files: [
+      {
+        match: 'server/prisma/queries/*.ts',
+        parser: ['EmbeddedQueryParser', { startTag: '\/* GraphQL *\/ `', endTag: '`' }],
+      },
+      {
+        match: 'server/prisma/queries/*.graphql',
+        parser: 'QueryParser',
+      },
+    ],
+  }
+}

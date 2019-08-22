@@ -1,0 +1,19 @@
+mutation AddQuestionToQuiz(
+  $data: QuizUpdateInput!
+  $where: QuizWhereUniqueInput!
+) {
+  updateQuiz(data: $data, where: $where) {
+    id
+    title
+    summary
+    createdAt
+    questions {
+      title
+      description
+      choices {
+        content
+        imageUrl
+      }
+    }
+  }
+}

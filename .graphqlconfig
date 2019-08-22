@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "tiny-quizzes": {
+      "schemaPath": "server/prisma/generated/prisma-client/schema.graphql",
+      "includes": ["**/*.graphql"],
+      "excludes": ["**/datamodel.prisma"],
+      "extensions": {
+        "endpoints": {
+          "dev": "http://localhost:4466"
+        }
+      }
+    }
+  }
+}
