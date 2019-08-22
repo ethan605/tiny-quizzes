@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "tiny-quizzes": {
+      "schemaPath": "server/prisma/generated/schema.graphql"
+    }
+  }
+}

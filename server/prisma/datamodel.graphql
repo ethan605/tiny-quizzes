@@ -3,7 +3,7 @@ type Quiz {
   title: String!
   description: String
   createdAt: DateTime! @createdAt
-  choices: [Choice!]!
+  choices: [Choice!]! @relation(link: INLINE)
 }
 
 type Choice {
