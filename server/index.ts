@@ -3,32 +3,42 @@ import * as bodyParser from 'body-parser';
 import next from 'next';
 
 // Locals
-import { prisma } from './prisma/generated/prisma-client';
+import { prisma } from './prisma/generated';
+import { IncomingMessage, ServerResponse } from 'http';
+import { UrlWithParsedQuery } from 'url';
 
-function buildServer(port: number): void {
+type GetRequestHandlerFunction = (
+  req: IncomingMessage,
+  res: ServerResponse,
+  parsedUrl?: UrlWithParsedQuery
+) => Promise<void>;
+
+function buildServer(port: number, handler: GetRequestHandlerFunction): void {
   const server = express();
 
   server.use(bodyParser.json());
 
-  server.post('/questions', async (req, res) => {
+  server.post('/api/questions', async (req, res) => {
     const result = await prisma.createQuestion(req.body);
     res.json(result);
   });
 
-  server.post('/quizzes', async (req, res) => {
+  server.post('/api/quizzes', async (req, res) => {
     const result = await prisma.createQuiz(req.body);
     res.json(result);
   });
 
-  server.get('/quizzes', async (__, res) => {
+  server.get('/api/quizzes', async (__, res) => {
     const result = await prisma.quizzes();
     res.json(result);
   });
 
-  server.get('/questions', async (__, res) => {
+  server.get('/api/questions', async (__, res) => {
     const result = await prisma.questions();
     res.json(result);
   });
+
+  server.get('*', (req, res) => handler(req, res));
 
   server.listen(port);
 }
@@ -37,9 +47,10 @@ async function buildApp(): Promise<void> {
   const port = parseInt(process.env.PORT, 10) || 3000;
   const dev = process.env.NODE_ENV !== 'production';
   const app = next({ dev });
+  const handler = app.getRequestHandler();
 
   await app.prepare();
-  buildServer(port);
+  buildServer(port, handler);
 }
 
 buildApp();
