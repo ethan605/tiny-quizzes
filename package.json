@@ -7,7 +7,7 @@
     "dev": "nodemon",
     "lint:app": "eslint app --ext .ts,.tsx",
     "lint:server": "eslint server --ext .ts,.tsx",
-    "start": "cross-env NODE_ENV=production PORT=8080 node .next/express/index.js"
+    "start": "cross-env node .next/express/index.js"
   },
   "dependencies": {
     "bootstrap": "^4.3.1",

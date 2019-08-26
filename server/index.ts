@@ -1,11 +1,11 @@
-import express from 'express';
 import * as bodyParser from 'body-parser';
+import express from 'express';
+import { IncomingMessage, ServerResponse } from 'http';
 import next from 'next';
+import { UrlWithParsedQuery } from 'url';
 
 // Locals
-import { prisma } from './prisma/generated';
-import { IncomingMessage, ServerResponse } from 'http';
-import { UrlWithParsedQuery } from 'url';
+import { prisma } from '../prisma/generated';
 
 type GetRequestHandlerFunction = (
   req: IncomingMessage,
@@ -49,8 +49,12 @@ async function buildApp(): Promise<void> {
   const app = next({ dev });
   const handler = app.getRequestHandler();
 
-  await app.prepare();
-  buildServer(port, handler);
+  try {
+    await app.prepare();
+    buildServer(port, handler);
+  } catch (error) {
+    console.debug('[Tiny Quizzes] Catched error', error);
+  }
 }
 
 buildApp();
